@@ -24,13 +24,16 @@ jobs:
           repository: Wilbursoft/wp-plugin-test-env
           path: wp-plugin-test-env
 
-      - name: Run tests
+      - name: Add ws-plugin-utils lib
         run: |
 
           echo create the wp-plugin-util name spaced lib directory and copy it in place
           php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
           cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
-
+          
+      - name: Run tests
+        run: |
+        
           echo creating docker image for test environment
           cd ./wp-plugin-test-env
           ./bin/make-wp-docker.sh ../wp-action-network-signup
@@ -54,10 +57,25 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: wp-action-network-signup
-      
+
+      - name: Checkout wp-plugin-utils
+        uses: actions/checkout@v2
+        with:
+          repository: Wilbursoft/wp-plugin-utils
+          path: wp-plugin-utils
+        
+      - name: Add ws-plugin-utils lib
+        if: success()
+        run: |
+
+          echo create the wp-plugin-util name spaced lib directory and copy it in place
+          php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
+          cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
+  
       - name: Zip 
         if: success()
         run: |
+        
           echo packaging 
           mkdir ./pkg
           cp ./wp-action-network-signup/*.php           ./pkg/
