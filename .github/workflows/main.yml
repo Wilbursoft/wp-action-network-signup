@@ -12,10 +12,11 @@ jobs:
         with:
           path: wp-action-network-signup
           
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
+      - name: Checkout wp-plugin-utils
+        uses: actions/checkout@v2
         with:
-          args: git submodule update --init --recursive
+          repository: Wilbursoft/wp-plugin-utils
+          path: wp-plugin-utils
 
       - name: Checkout wp-action-network-signup
         uses: actions/checkout@v2
@@ -25,6 +26,10 @@ jobs:
 
       - name: Run tests
         run: |
+
+          echo create the wp-plugin-util name spaced lib directory and copy it in place
+          php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
+          cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
 
           echo creating docker image for test environment
           cd ./wp-plugin-test-env
