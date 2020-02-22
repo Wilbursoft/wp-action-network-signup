@@ -1,0 +1,86 @@
+name: Tests
+on: [push]
+
+jobs:
+  unit-test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout  
+        uses: actions/checkout@v2
+        with:
+          path: wp-action-network-signup
+
+      - name: Checkout wp-action-network-signup
+        uses: actions/checkout@v2
+        with:
+          repository: Wilbursoft/wp-plugin-test-env
+          path: wp-plugin-test-env
+
+      - name: Run tests
+        run: |
+
+          echo creating docker image for test environment
+          cd ./wp-plugin-test-env
+          ./bin/make-wp-docker.sh ../wp-action-network-signup
+          
+          echo spinning up test environment 
+          ./bin/bring-up-test-env.sh
+          cd ..
+
+          echo Run the tests
+          docker exec docker-test-env_wordpress_1 /var/www/html/setup-run-unittests.sh 
+          exit $?
+         
+  package:
+    name: Package & Release
+    needs: [unit-test]
+    runs-on: ubuntu-latest
+
+    steps:  
+      
+      - name: Checkout  
+        uses: actions/checkout@v2
+        with:
+          path: wp-action-network-signup
+      
+      - name: Zip 
+        if: success()
+        run: |
+          echo packaging 
+          mkdir ./pkg
+          cp ./wp-action-network-signup/*.php           ./pkg/
+          cp ./wp-action-network-signup/README.md       ./pkg/
+          cp ./wp-action-network-signup/LICENSE.txt     ./pkg/
+          cp ./wp-action-network-signup/readme.txt      ./pkg/
+          cp -r ./wp-action-network-signup/includes/    ./pkg/
+          cp -r -p ./wp-action-network-signup/wp-plugin-utils/lib ./pkg/wp-plugin-utils
+          cd ./pkg
+          zip -r ../wp-action-network-signup.zip .
+          cd ..
+          
+      - name: Create Release Asset
+        if: success()
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: Tag_${{ github.run_number }}
+          release_name:  Release_${{ github.run_number }}
+          draft: false
+          prerelease: false
+        
+      - name: Upload Release Asset
+        if: success()
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./wp-action-network-signup.zip
+          asset_name: wp-action-network-signup.zip
+          asset_content_type: application/zip
+          
