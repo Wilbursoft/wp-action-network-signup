@@ -82,7 +82,7 @@ jobs:
           cp ./wp-action-network-signup/README.md       ./pkg/
           cp ./wp-action-network-signup/LICENSE         ./pkg/
           cp ./wp-action-network-signup/readme.txt      ./pkg/
-          cp -r -p ./wp-action-network-signup/wp-plugin-utils/lib ./pkg/wp-plugin-utils/
+          cp -r -p ./wp-action-network-signup/wp-plugin-utils/lib ./pkg/wp-plugin-utils/lib/
           cd ./pkg
           zip -r ../wp-action-network-signup.zip .
           cd ..
