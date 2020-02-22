@@ -29,7 +29,7 @@ jobs:
 
           echo create the wp-plugin-util name spaced lib directory and copy it in place
           php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
-          cp -r -p ./wp-plugin-utils/lib/*.* ./wp-action-network-signup/wp-plugin-utils/lib/*.*
+          cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
           
       - name: Run tests
         run: |
@@ -70,7 +70,7 @@ jobs:
 
           echo create the wp-plugin-util name spaced lib directory and copy it in place
           php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
-          cp -r -p ./wp-plugin-utils/lib/*.* ./wp-action-network-signup/wp-plugin-utils/lib/*.*
+          cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
   
       - name: Zip 
         if: success()
@@ -82,7 +82,7 @@ jobs:
           cp ./wp-action-network-signup/README.md       ./pkg/
           cp ./wp-action-network-signup/LICENSE         ./pkg/
           cp ./wp-action-network-signup/readme.txt      ./pkg/
-          cp -r -p ./wp-action-network-signup/wp-plugin-utils/lib ./pkg/wp-plugin-utils
+          cp -r -p ./wp-action-network-signup/wp-plugin-utils/lib ./pkg/wp-plugin-utils/
           cd ./pkg
           zip -r ../wp-action-network-signup.zip .
           cd ..
