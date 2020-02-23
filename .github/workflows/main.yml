@@ -69,7 +69,7 @@ jobs:
         run: |
 
           echo create the wp-plugin-util name spaced lib directory and copy it in place
-          php ./wp-plugin-utils/pull-src2lib.php wp-action-network-signup
+          php ./wp-plugin-utils/pull-src2lib.php wp_action_network_signup
           cp -r -p ./wp-plugin-utils/lib ./wp-action-network-signup/wp-plugin-utils/
   
       - name: Zip 
