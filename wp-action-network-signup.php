@@ -15,6 +15,12 @@
 // includes 
 require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/utils.php';
 use wp_action_network_signup\plugin_utils as utils;
+require_once dirname( __FILE__ ) .'/class.ans-render.php';
 
 // trace
 utils\dbg_trace("");
+
+
+utils\dbg_trace("creating IC_Render object");
+new ANS_Render();
+
