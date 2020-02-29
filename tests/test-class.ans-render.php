@@ -38,9 +38,9 @@ class ANS_RenderTest extends WP_UnitTestCase
         // Create empty output
         $output =  $renderer->render_shortcode();
         $this->assertTrue(utils\is_valid_html($output, true));
-        $this->assertTrue(false !== strpos($output,'ANS_Render'));
-
-        
+        $this->assertTrue(false !== strpos($output,'ans_signup_form'));
+        $this->assertTrue(false !== strpos($output,'<form'));
+        $this->assertTrue(false !== strpos($output,'<input'));
         
     }
 
