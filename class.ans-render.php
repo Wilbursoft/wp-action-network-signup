@@ -25,10 +25,10 @@ class ANS_Form extends utils\Form {
       $output .= $this->hlp_get_input_html(
             "ans_mv_EMAIL",   // $field_name 
             "Email Address",  // $field_text
-            "email required",     // $placholder_text
-            "ans_merge_var",  // $div_class, 
+            "email required", // $placholder_text
+            "ans_var",        // $div_class, 
             "ans_var_label",  // $label_class, 
-            "ans_input"       // $input_class
+            "ans_var_input"   // $input_class
             );
             
       // First Name 
@@ -36,9 +36,9 @@ class ANS_Form extends utils\Form {
             "ans_mv_FNAME",   // $field_name 
             "First Name",     // $field_text
             "",               // $placholder_text
-            "ans_merge_var",  // $div_class, 
+            "ans_var",        // $div_class, 
             "ans_var_label",  // $label_class, 
-            "ans_input"       // $input_class
+            "ans_var_input"   // $input_class
             );
             
       // Last name 
@@ -46,9 +46,9 @@ class ANS_Form extends utils\Form {
             "ans_mv_LNAME",   // $field_name 
             "Last Name",      // $field_text
             "",               // $placholder_text
-            "ans_merge_var",  // $div_class, 
+            "ans_var",        // $div_class, 
             "ans_var_label",  // $label_class, 
-            "ans_input"       // $input_class
+            "ans_var_input"       // $input_class
             );
             
       // Submit
@@ -108,7 +108,23 @@ class ANS_Render extends utils\Render {
     
 	}
 
+  // Generate the CSS 
+  function render_dynamic_css(){
 
+ 
+  
+    // Set the css properties
+    echo (".ans_var_input {\n");
+    echo ("  background-color: #fafafa;\n");
+    echo ("  border-width: 1px;\n");
+    echo ("  width: 100%;\n");
+    echo ("}\n");
+    
+    echo (".ans_var {\n");
+    echo ("  margin-bottom: 0.5em;\n");
+    echo ("}\n");
+  }
+  
 
   // Render the short code 
   function render_shortcode(){
