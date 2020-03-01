@@ -12,51 +12,74 @@ use wp_action_network_signup\plugin_utils as utils;
 
 
 class ANS_Form extends utils\Form {
-    
+  
+        
     // return the contents of the form 
     function get_form_contents_html(){
 
-      // Capture
-      ob_start();
+     
+      // Open block
+      $output = "<div class='ans_form_inside'>";
       
-      ?> 
-      <div class='ans_form_inside'>
-          <div class='updated' id='ans_message'></div>
-              <div class='ans_merge_var'>
-             <label for='ans_mv_EMAIL' class='ans_var_label ans_header ans_header_email'>Email Address<span class='ans_required'>*</span></label>
-               <input type='text' size='18' placeholder='' name='ans_mv_EMAIL' id='ans_mv_EMAIL' class='ans_input' />
-              </div>
-              <div class='ans_merge_var'>
-             <label for='ans_mv_FNAME' class='ans_var_label ans_header ans_header_text'>First Name</label>
-               <input type='text' size='18' placeholder='' name='ans_mv_FNAME' id='ans_mv_FNAME' class='ans_input' />
-              </div>
-              <div class='ans_merge_var'>
-              <label for='ans_mv_LNAME' class='ans_var_label ans_header ans_header_text'>Last Name</label>
-                <input type='text' size='18' placeholder='' name='ans_mv_LNAME' id='ans_mv_LNAME' class='ans_input' />
-              </div>
-              <div id='mc-indicates-required'> * = required field	</div>
-              <div class='ans_signup_submit'>
-  			    <input type='submit' name='ans_signup_submit' id='ans_signup_submit' value='Subscribe' class='button' />
-          </div>
-        </div> 
-      <?php
+      // Email 
+      $output .= $this->hlp_get_input_html(
+            "ans_mv_EMAIL",   // $field_name 
+            "Email Address",  // $field_text
+            "email required",     // $placholder_text
+            "ans_merge_var",  // $div_class, 
+            "ans_var_label",  // $label_class, 
+            "ans_input"       // $input_class
+            );
+            
+      // First Name 
+      $output .= $this->hlp_get_input_html(
+            "ans_mv_FNAME",   // $field_name 
+            "First Name",     // $field_text
+            "",               // $placholder_text
+            "ans_merge_var",  // $div_class, 
+            "ans_var_label",  // $label_class, 
+            "ans_input"       // $input_class
+            );
+            
+      // Last name 
+      $output .= $this->hlp_get_input_html(
+            "ans_mv_LNAME",   // $field_name 
+            "Last Name",      // $field_text
+            "",               // $placholder_text
+            "ans_merge_var",  // $div_class, 
+            "ans_var_label",  // $label_class, 
+            "ans_input"       // $input_class
+            );
+            
+      // Submit
+      $output .= $this->hlp_get_submit_html(
+            "ans_signup_submit", // $submit_name
+            "Subscribe",         // $submit_text,
+            "ans_signup_submit",// $div_class, 
+            "button"              // $input_class
+            );
+            
+      // Close block 
+      $output .= "</div>";
       
-      // End capture
-      $output = ob_get_contents();
-      ob_end_clean();
+      // Done
       return $output;
     }
 
   // Validate and action
-  function handle_form_post(){
+  function handle_form_post($post){
     
     utils\dbg_trace();
     
-    global  $_POST;
+    // Sanitise inputs 
+    $email      = filter_var ( utils\get_value($post,'ans_mv_EMAIL', ''), FILTER_SANITIZE_EMAIL); 
+    $first_name = filter_var ( utils\get_value($post,'ans_mv_FNAME', ''), FILTER_SANITIZE_STRING); 
+    $last_name  = filter_var ( utils\get_value($post,'ans_mv_LNAME', ''), FILTER_SANITIZE_STRING); 
     
-    $email      = filter_var ( utils\get_value($_POST,'ans_mv_EMAIL', ''), FILTER_SANITIZE_EMAIL); 
-    $first_name = filter_var ( utils\get_value($_POST,'ans_mv_FNAME', ''), FILTER_SANITIZE_STRING); 
-    $last_name  = filter_var ( utils\get_value($_POST,'ans_mv_LNAME', ''), FILTER_SANITIZE_STRING); 
+    // Check the email is good.
+    if(! utils\is_valid_email($email)){
+      $this->set_post_invalid();
+    }
 
   }
 }
