@@ -33,7 +33,7 @@ class ANS_Signup_Form_Test extends WP_UnitTestCase
                                         $failed_msg,
                                         $success_msg);
         
-        $this->assertTrue(is_valid_html($form_to_test->get_form_contents_html()));
+        $this->assertTrue(utils\is_valid_html($form_to_test->get_form_contents_html()));
 
         /**
          *  Test post
@@ -48,7 +48,7 @@ class ANS_Signup_Form_Test extends WP_UnitTestCase
  	    $_POST['form_name'] = $form_name;
  	    $_POST[$form_to_test->hlp_get_nonce_name()] = wp_create_nonce($form_to_test->hlp_get_nonce_action());
         $form_html = $form_to_test->get_form_html();
-        $this->assertTrue(is_valid_html($form_html));
+        $this->assertTrue(utils\is_valid_html($form_html));
         $this->assertContains($failed_msg, $form_html);
         $this->assertTrue(false === strpos($form_html, $success_msg));
     
@@ -58,7 +58,7 @@ class ANS_Signup_Form_Test extends WP_UnitTestCase
 	    $form_to_test = new ANS_Signup_Form( $form_name, $form_id,  $failed_msg, $success_msg);
  	    $_POST['form_name'] = $form_name;
         $form_html = $form_to_test->get_form_html();
-        $this->assertTrue(is_valid_html($form_html));
+        $this->assertTrue(utils\is_valid_html($form_html));
         $this->assertContains($success_msg, $form_html);
         $this->assertTrue(false === strpos($form_html, $failed_msg));
         
