@@ -4,7 +4,7 @@
 * Test Utilities
 */
 
-require_once "./wp-action-network-signup.php";
+require_once dirname( __FILE__ ) .'/../wp-action-network-signup.php';
 
 
 class IC_InfoCardsTest extends WP_UnitTestCase

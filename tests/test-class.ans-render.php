@@ -42,6 +42,12 @@ class ANS_RenderTest extends WP_UnitTestCase
         $this->assertTrue(false !== strpos($output,'<form'));
         $this->assertTrue(false !== strpos($output,'<input'));
         
+        // Test the dynamic  CSS code 
+        ob_start();
+        $renderer-> render_dynamic_css();
+        $output = ob_get_contents();
+        $this->assertTrue(false !== strpos($output,'.ans_var_input'));
+        ob_end_clean();
     }
 
 }
