@@ -4,14 +4,17 @@
 * Test Utilities
 */
 
+require_once dirname( __FILE__ ) .'/../wp-plugin-utils/lib/utils.php'; 
 require_once dirname( __FILE__ ) .'/../action-network-api.php';
+
 
 class Action_Network_API_Test extends WP_UnitTestCase
 {
     // Create a helper_curl_request httpRequest object that behaves as expected
     static function create_happy_helper_curl_request_mock($test_case){
             
-        $helper_curl_request = $test_case->createMock('HttpRequest');
+
+        $helper_curl_request = $test_case->createMock('wp_action_network_signup\plugin_utils\HttpRequest');
         $helper_curl_request->method('set_option')->willReturn(true);
         $helper_curl_request->method('execute')->willReturn(true);
         $helper_curl_request->method('get_exec_output')
@@ -25,7 +28,7 @@ class Action_Network_API_Test extends WP_UnitTestCase
     // Create a $curl_post_request httpRequest object that behaves as expected
     static function create_happy_curl_post_request_mock($test_case){
         
-        $curl_post_request = $test_case->createMock('HttpRequest');
+        $curl_post_request = $test_case->createMock('wp_action_network_signup\plugin_utils\HttpRequest');
         $curl_post_request->method('set_option')->willReturn(true);
         $curl_post_request->method('execute')->willReturn(true);
         $curl_post_request->method('get_info')->willReturn(200);
