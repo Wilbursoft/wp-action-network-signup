@@ -1,14 +1,13 @@
 <?php
 
 /**
-* Plugin Name: Action Network Sign Up
-* Plugin URI: https://wilbursoft.com
+* Plugin Name: Signup for Action Network
 * Description: Creates a sign up form for The Action Network
-* Version: 1.0.0
-* Author: Guy Roberts @ Wilbursoft 
-* Author URI: https://wilbursoft.com
-* License: GPL2
-* Text Domain: action-network-signup
+* Version: 1.1.3
+* Author: Guy Roberts
+* Author URI: mailto:guywilliamwelchroberts@gmail.com
+* License: GPL3
+* Text Domain: action_network_signup
 */
 
 // @codeCoverageIgnoreStart

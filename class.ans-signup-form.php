@@ -25,36 +25,36 @@ class ANS_Signup_Form extends utils\Form {
       
       // Email 
       $output .= $this->hlp_get_input_html(
-            "ans_mv_EMAIL",   // $field_name 
-            "Email Address*",  // $field_text
-            "",                 // $placholder_text
-            "ans_var",        // $div_class, 
-            "ans_var_label",  // $label_class, 
-            "ans_var_input"   // $input_class
+            "ans_mv_EMAIL",                                // $field_name 
+            __("Email Address*", 'action_network_signup' ),  // $field_text
+            "",                                              // $placholder_text
+            "ans_var",                                     // $div_class, 
+            "ans_var_label",                               // $label_class, 
+            "ans_var_input"                                // $input_class
             );
             
       // First Name 
       $output .= $this->hlp_get_input_html(
-            "ans_mv_FNAME",   // $field_name 
-            "First Name",     // $field_text
-            "",               // $placholder_text
-            "ans_var",        // $div_class, 
-            "ans_var_label",  // $label_class, 
-            "ans_var_input"   // $input_class
+            "ans_mv_FNAME",                                 // $field_name 
+            __("First Name", 'action_network_signup' ),     // $field_text
+            "",                                            // $placholder_text
+            "ans_var",                                     // $div_class, 
+            "ans_var_label",                               // $label_class, 
+            "ans_var_input"                                // $input_class
             );
             
       // Last name 
       $output .= $this->hlp_get_input_html(
-            "ans_mv_LNAME",   // $field_name 
-            "Last Name",      // $field_text
-            "",               // $placholder_text
-            "ans_var",        // $div_class, 
-            "ans_var_label",  // $label_class, 
-            "ans_var_input"       // $input_class
+            "ans_mv_LNAME",                                // $field_name 
+            __("Last Name", 'action_network_signup' ),      // $field_text
+            "",                                            // $placholder_text
+            "ans_var",                                     // $div_class, 
+            "ans_var_label",                               // $label_class, 
+            "ans_var_input"                                    // $input_class
             );
          
       // Required field text
-      $required_field_text = "* = required field";
+      $required_field_text = __("* = required field", 'action_network_signup' );
       $output .="<p>{$required_field_text}</p>";
       
       // Submit
@@ -93,13 +93,14 @@ class ANS_Signup_Form extends utils\Form {
     }
 
     // API object
-    $api_key =   utils\get_option_array_value ('asn_options', 'asn_api_key', 'no-api-key-defined');
+    $api_key =   utils\get_option_array_value ('asn_options', 'asn_rest_api_key', 'no-api-key-defined');
 
     $api = new Action_Network_API($api_key);
 
     // Get the sign up helper url
     if ( ! $api->add_person($identifier, $first_name, $last_name, $email ) ){
-        $this->set_post_invalid("Problem calling Action Network API. Is the API key and account setup correctly?");
+        $err_msg = __("Problem calling Action Network API. <br>Is the API key and account setup correctly?", 'action_network_signup' );
+        $this->set_post_invalid($err_msg);
         return;
     }
     
