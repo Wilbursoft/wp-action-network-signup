@@ -32,8 +32,8 @@ class ANS_Render extends utils\Render {
     $this->signup_form = new ANS_Signup_Form(
                                 'ans_signup_form',              // $form_name
                                 'ans_signup_form_id',           // $form_id
-                                'Please enter a valid email',   // $failed_msg
-                                'Submitted ok'                  // $success_msg
+                                'Please enter a valid email.',   // $failed_msg
+                                'You have been subscribed successfully!'                  // $success_msg
                                 );
     
 	}

@@ -7,7 +7,7 @@
 require_once dirname( __FILE__ ) .'/../wp-action-network-signup.php';
 
 
-class IC_InfoCardsTest extends WP_UnitTestCase
+class Action_Network_Signup_Test extends WP_UnitTestCase
 {
 
 

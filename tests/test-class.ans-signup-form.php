@@ -5,12 +5,10 @@
 require_once dirname( __FILE__ ) . '/../wp-plugin-utils/lib/utils.php'; 
 use wp_action_network_signup\plugin_utils as utils;
 require_once dirname( __FILE__ ) . "/../class.ans-signup-form.php";
+require_once dirname( __FILE__ ) . "/test-action-network-api.php";
 
 class ANS_Signup_Form_Test extends WP_UnitTestCase
 {
-
-
-  
 
     
     // Run the tests
@@ -38,6 +36,11 @@ class ANS_Signup_Form_Test extends WP_UnitTestCase
         /**
          *  Test post
          **/
+         
+        // Setup happy path mocks for the rest API
+        Action_Network_API::$helper_curl_request  = Action_Network_API_Test::create_happy_helper_curl_request_mock($this);
+        Action_Network_API::$curl_post_request  = Action_Network_API_Test::create_happy_curl_post_request_mock($this);
+
          
         // Make a copy of to restore later
         global $_POST;

@@ -9,6 +9,8 @@ require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/utils.php';
 require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/class.render.php'; 
 require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/class.form.php'; 
 use wp_action_network_signup\plugin_utils as utils;
+require_once dirname( __FILE__ ) .'/action-network-api.php';
+
 
 
 class ANS_Signup_Form extends utils\Form {
@@ -24,8 +26,8 @@ class ANS_Signup_Form extends utils\Form {
       // Email 
       $output .= $this->hlp_get_input_html(
             "ans_mv_EMAIL",   // $field_name 
-            "Email Address",  // $field_text
-            "email required", // $placholder_text
+            "Email Address*",  // $field_text
+            "",                 // $placholder_text
             "ans_var",        // $div_class, 
             "ans_var_label",  // $label_class, 
             "ans_var_input"   // $input_class
@@ -50,15 +52,20 @@ class ANS_Signup_Form extends utils\Form {
             "ans_var_label",  // $label_class, 
             "ans_var_input"       // $input_class
             );
-            
+         
+      // Required field text
+      $required_field_text = "* = required field";
+      $output .="<p>{$required_field_text}</p>";
+      
       // Submit
       $output .= $this->hlp_get_submit_html(
-            "ans_signup_submit", // $submit_name
-            "Subscribe",         // $submit_text,
-            "ans_signup_submit",// $div_class, 
-            "button"              // $input_class
+            "ans_signup_submit",    // $submit_name
+            "Subscribe",            // $submit_text,
+            "ans_signup_submit",    // $div_class, 
+            "button"                // $input_class
             );
             
+
       // Close block 
       $output .= "</div>";
       
@@ -76,10 +83,26 @@ class ANS_Signup_Form extends utils\Form {
     $first_name = filter_var ( utils\get_value($post,'ans_mv_FNAME', ''), FILTER_SANITIZE_STRING); 
     $last_name  = filter_var ( utils\get_value($post,'ans_mv_LNAME', ''), FILTER_SANITIZE_STRING); 
     
+    // Action network identifier
+    $identifier = "wp-action-network-signup";
+    
     // Check the email is good.
     if(! utils\is_valid_email($email)){
-      $this->set_post_invalid();
+        $this->set_post_invalid();
+        return;
     }
+
+    // API object
+    $api_key =   utils\get_option_array_value ('asn_options', 'asn_api_key', 'no-api-key-defined');
+
+    $api = new Action_Network_API($api_key);
+
+    // Get the sign up helper url
+    if ( ! $api->add_person($identifier, $first_name, $last_name, $email ) ){
+        $this->set_post_invalid("Problem calling Action Network API. Is the API key and account setup correctly?");
+        return;
+    }
+    
 
   }
 }
